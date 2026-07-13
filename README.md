@@ -1,24 +1,35 @@
-Start
+# Redis Docker
 
-```
-mkdir data
+## Start
+
+```bash
+mkdir -p data
 docker compose up -d
 ```
 
-Verify
-```
+## Verify
+
+```bash
 docker compose ps
 docker compose logs -f redis
 docker exec -it redis redis-cli -a YOUR_PASSWORD ping
 ```
 
-Connect URL
+Expected output:
+
+```text
+PONG
 ```
+
+## Connection
+
+```env
 REDIS_URL=redis://:YOUR_PASSWORD@localhost:6379
 ```
 
-Common Redis operations
-```
+## Common Commands
+
+```redis
 SET key value
 GET key
 DEL key
@@ -26,35 +37,60 @@ DEL key
 EXISTS key
 
 EXPIRE key 3600
-
 TTL key
 
 INCR counter
 
 LPUSH queue job1
-
 RPOP queue
 
 HSET user:1 name John
-
 HGETALL user:1
 ```
 
-Monitoring
+## Monitoring
 
-View logs:
-```
+### Logs
+
+```bash
 docker logs -f redis
 ```
-View memory usage:
-```
+
+### Memory Usage
+
+```bash
 docker exec -it redis redis-cli -a YOUR_PASSWORD INFO memory
 ```
-View connected clients:
-```
+
+### Connected Clients
+
+```bash
 docker exec -it redis redis-cli -a YOUR_PASSWORD CLIENT LIST
 ```
-View overall server info:
-```
+
+### Server Info
+
+```bash
 docker exec -it redis redis-cli -a YOUR_PASSWORD INFO
+```
+
+## Backup & Restore
+
+### Backup
+
+```bash
+tar -czf redis-backup-$(date +%F).tar.gz data/
+```
+
+### Restore
+
+> Stop Redis before restoring.
+
+```bash
+docker compose down
+
+rm -rf data
+tar -xzf redis-backup-YYYY-MM-DD.tar.gz
+
+docker compose up -d
 ```
