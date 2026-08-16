@@ -1,8 +1,12 @@
 # Redis Docker
 
+Redis 8 (Alpine) with AOF persistence. Data persists in `./data`.
+
 ## Start
 
 ```bash
+cp .env.example .env
+# set REDIS_PASSWORD (openssl rand -hex 32)
 mkdir -p data
 docker compose up -d
 ```
@@ -94,3 +98,7 @@ tar -xzf redis-backup-YYYY-MM-DD.tar.gz
 
 docker compose up -d
 ```
+
+## License
+
+[MIT](LICENSE)
